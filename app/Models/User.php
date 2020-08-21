@@ -4,9 +4,9 @@ namespace App\Models;
 
 class User 
 {
-    public $first_name;
-    public $last_name;
-    public $email;
+    private $first_name;
+    private $last_name;
+    private $email;
 
     public function setFirstName($firstName)
     {
