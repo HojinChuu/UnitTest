@@ -56,4 +56,62 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(3, $items);
         $this->assertInstanceOf(ArrayIterator::class, $collection->getIterator());
     }
+
+    /** @test */
+    public function collection_can_be_merged_with_another_collection()
+    {
+        $collection1 = new \App\Support\Collection([
+            '1', '2'
+        ]);
+        $collection2 = new \App\Support\Collection([
+            '3', '4', '5'
+        ]);
+
+        $collection1->merge($collection2);
+
+        $this->assertCount(5, $collection1->get());
+        $this->assertEquals(5, $collection1->count());
+    }
+
+    /** @test */
+    public function can_add_existing_collection()
+    {
+        $collection = new \App\Support\Collection([
+            '1', '2'
+        ]);
+
+        $collection->add(['3']);
+
+        $this->assertCount(3, $collection->get());
+        $this->assertEquals(3, $collection->count());
+    }
+
+    /** @test */
+    public function returns_json_encoded_items()
+    {
+        $collection = new \App\Support\Collection([
+            ['username' => 'Hojin'],
+            ['username' => 'Jueun']
+        ]);
+
+        $json = '[{"username":"Hojin"},{"username":"Jueun"}]';
+
+        $this->assertIsString($collection->toJson());
+        $this->assertEquals($json, $collection->toJson());
+    }
+
+    /** @test */
+    public function json_encoding_collection_object_returns_json()
+    {
+        $collection = new \App\Support\Collection([
+            ['username' => 'Hojin'],
+            ['username' => 'Jueun']
+        ]);
+
+        $encoded = json_encode($collection);
+        $json = '[{"username":"Hojin"},{"username":"Jueun"}]';
+
+        $this->assertIsString($encoded);
+        $this->assertEquals($json, $encoded);
+    }
 }
